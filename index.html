@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="vi">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Mini Project ATTT</title>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+      <link rel="stylesheet" href="styles.css">
+   </head>
+   <body>
+      <div class="container">
+         <h1 class="text-center mb-4">Mã hóa cổ điển (classical cryptographic)</h1>
+         <div class="alert alert-info" role="alert">
+            <strong>Thông tin:</strong> Trang web này cung cấp các công cụ mã hóa cho các loại mã hóa cổ điển như mã Caesar, mã Monoalphabetic Substitution, mã Vigenère, mã Playfair, One-Time Pad và mã hàng rào sắt (Rail Fence Cipher) đã được học trong Chương 5 của môn NMATT.
+            <br>
+            <strong>Tác giả:</strong> Phạm Tiến Thành 
+            <br>
+            <strong>Tài liệu tham khảo:</strong> <a href="https://onedrive.live.com/?authkey=%21ADTqpPjpCSwxk2M&cid=970689E0F6BB33F2&id=970689E0F6BB33F2%2163445&parId=970689E0F6BB33F2%2163426&o=OneUp" target="_blank">Slide Chương 5</a>, <a href="https://vi.wikipedia.org/wiki/M%E1%BA%ADt_m%C3%A3_Vigen%C3%A8re" target="_blank">Wikipedia</a>, <a href="https://viblo.asia/p/tim-hieu-ve-he-ma-one-time-pad-yMnKM62NZ7P" target="_blank">Viblo</a>
+         </div>
+         <div class="row">
+            <div class="col-md-4">
+               <div class="card mb-3">
+                  <div class="card-header">
+                     <h5 style="text-align: center; margin-bottom: 10px; font-size: 20px;">Mã Caesar</h5>
+                  </div>
+                  <div class="card-body">
+                     <div class="txt-info">
+                        <p>Mã Caesar là một mã thay thế đơn giản trong đó mỗi ký tự trong văn bản gốc được thay thế bằng một ký tự khác bằng cách dịch chuyển trong bảng chữ cái theo một số <strong>bước K</strong> nhất định.</p>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Caesar_cipher_left_shift_of_3.svg/1200px-Caesar_cipher_left_shift_of_3.svg.png" alt="Caesar cipher" style="width: 100%; max-width: 200px; margin: 0 auto; display: block; margin-top: 10px; margin-bottom: 10px;"> 
+                        <p><strong>Mã hóa:</strong> Mỗi ký tự trong văn bản gốc được dịch chuyển sang phải K bước trong bảng chữ cái.</p>
+                        <strong>Bảng chữ cái:</strong>
+                        <br>
+                        <span>A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</span>
+                        <br>
+                        <strong>Bảng chữ cái mã hóa:</strong>
+                        <br>
+                        <div class ="alert alert-danger" role="alert" id="caesarError" style="display: none;"></div>
+                        <span id="encodedAlphabet"></span>
+                     </div>
+                     <div class="cipher">
+                        <label for="caesarPlaintext" class="form-label"><strong>Văn bản nguồn:</strong></label>
+                        <textarea class="form-control" id="caesarPlaintext" rows="3" placeholder="Nhập văn bản nguồn">HELLO WORLD</textarea>
+                        <label for="caesarKey" class="form-label"><strong>Khóa K:</strong> (0-25)</label>
+                        <input class="form-control" type="number" id="caesarKey" min="0" max="25" required value="3">   
+                        <label for="caesarCiphertext" class="form-label"><strong>Văn bản mã hóa:</strong></label>
+                        <textarea class="form-control" id="caesarCiphertext" rows="3" readonly></textarea>
+                     </div>
+                     <div class="text-center mt-3">
+                        <button class="btn btn-outline-dark btn-cipher" onclick="encryptCaesar()" style="margin-top: 10px;">Mã hóa</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-4">
+               <div class="card mb-3">
+                  <div class="card-header">
+                    <h5 style="text-align: center; margin-bottom: 10px; font-size: 20px;">Mã Monoalphabetic Substitution</h5>
+                  </div>
+                  <div class="card-body">
+                     <div class="txt-info">
+                        <p>Mã Monoalphabetic Substitution là một mã thay thế trong đó mỗi ký tự trong văn bản gốc được thay thế bằng một ký tự khác theo một quy tắc cụ thể.</p>
+                        <p><strong>Mã hóa:</strong> Mỗi ký tự trong văn bản gốc được thay thế bằng ký tự tương ứng trong chuỗi khóa.</p>
+                        <p><strong>Khóa:</strong> Phải là một chuỗi chữ cái gồm 26 ký tự không trùng lặp.</p>
+                        <strong>Bảng chữ cái:</strong>
+                        <br>
+                        <span>A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</span>
+                        <br>
+                        <strong>Bảng chữ cái mã hóa:</strong>
+                        <br>
+                        <div class ="alert alert-danger" role="alert" id="monoError" style="display: none;"></div>
+                        <span id="monoEncodedAlphabet"></span>
+                     </div>
+                     <div class="cipher">
+                        <label for="monoPlaintext" class="form-label"><strong>Văn bản nguồn:</strong></label>
+                        <textarea class="form-control" id="monoPlaintext" rows="3" placeholder="Nhập văn bản nguồn">HELLO WORLD</textarea>
+                        <label for="monoKey" class="form-label"><strong>Khóa:</strong></label>
+                        <input type="text" class="form-control" id="monoKey" placeholder="Nhập khóa" value="QWERTYUIOPASDFGHJKLZXCVBNM">
+                        <label for="monoCiphertext" class="form-label"><strong>Văn bản mã hóa:</strong></label>
+                        <textarea class="form-control" id="monoCiphertext" rows="3" readonly></textarea>
+                     </div>
+                     <div class="text-center mt-3">
+                        <button class="btn btn-outline-dark btn-cipher" onclick="encryptMonoalphabetic()">Mã hóa</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-4">
+               <div class="card mb-3">
+                  <div class="card-header">
+                    <h5 style="text-align: center; margin-bottom: 10px; font-size: 20px;">Mã Vigenère</h5>
+                  </div>
+                  <div class="card-body">
+                     <div class="txt-info">
+                        <p>Mã Vigenère là một loại mã thay thế đa bảng chữ cái, trong đó một bảng chữ cái khác nhau được sử dụng để mã hóa mỗi ký tự trong văn bản gốc.</p>
+                        <p><strong>Mã hóa:</strong> <a href="https://vi.wikipedia.org/wiki/M%E1%BA%ADt_m%C3%A3_Vigen%C3%A8re" target="_blank">Xem hướng dẫn mã hóa tại đây</a></p>
+                        <p><strong>Khóa:</strong> Là một chuỗi ký tự chữ cái không dấu, không bao gồm số và ký tự đặc biệt.</p>
+                        <div class ="alert alert-danger" role="alert" id="vigenereError" style="display: none;"></div>
+                        <p><strong>Bảng mã hóa Vigenère:</strong></p>
+                        <textarea class="form-control" id="vigenereKeyTable" rows="6" readonly></textarea>
+                     </div>
+                     <div class="cipher">
+                        <label for="vigenerePlaintext" class="form-label"><strong>Văn bản nguồn:</strong></label>
+                        <textarea class="form-control" id="vigenerePlaintext" rows="3" placeholder="Nhập văn bản nguồn">HELLO WORLD</textarea>
+                        <label for="vigenereKey" class="form-label"><strong>Khóa:</strong></label>
+                        <input type="text" class="form-control" id="vigenereKey" placeholder="Nhập khóa" value="KEY">
+                        <label for="vigenereCiphertext" class="form-label"><strong>Văn bản mã hóa:</strong></label>
+                        <textarea class="form-control" id="vigenereCiphertext" rows="3" readonly></textarea>
+                     </div>
+                     <div class="text-center mt-3">
+                        <button class="btn btn-outline-dark btn-cipher" onclick="encryptVigenere()">Mã hóa</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-md-4">
+               <div class="card mb-3 equal-height">
+                  <div class="card-header">
+                    <h5 style="text-align: center; margin-bottom: 10px; font-size: 20px;">Mã Playfair</h5>
+                  </div>
+                  <div class="card-body">
+                     <div class="txt-info">
+                        <p>Mã Playfair là một loại mã thay thế đa bảng chữ cái, trong đó các ký tự trong văn bản được mã hóa theo từng cặp.</p>
+                        <p><strong>Mã hóa:</strong> <a href="https://vi.wikipedia.org/wiki/M%E1%BA%ADt_m%C3%A3_Playfair" target="_blank">Xem hướng dẫn mã hóa tại đây</a></p>
+                        <p><strong>Khóa:</strong> Là một chuỗi ký tự chữ cái không dấu, không bao gồm số và ký tự đặc biệt.</p>
+                        <p><strong>Ma trận mã hóa Playfair:</strong></p>
+                        <div class ="alert alert-danger" role="alert" id="playfairError" style="display: none;"></div>
+                        <table id="playfairKeyTable" class="table table-bordered small-cells" style= "width: 100%; max-width: 150px; margin: 0 auto; display: block; margin-top: 10px; margin-bottom: 10px; height: 150px"></table>
+                     </div>
+                     <div class="cipher">
+                        <label for="playfairPlaintext" class="form-label"><strong>Văn bản nguồn:</strong></label>
+                        <textarea class="form-control" id="playfairPlaintext" rows="3" placeholder="Nhập văn bản nguồn">HELLO WORLD</textarea>
+                        <label for="playfairKey" class="form-label"><strong>Khóa:</strong></label>
+                        <input type="text" class="form-control" id="playfairKey" placeholder="Nhập khóa" value="CIPHER">
+                        <label for="playfairCiphertext" class="form-label"><strong>Văn bản mã hóa:</strong></label>
+                        <textarea class="form-control" id="playfairCiphertext" rows="3" readonly></textarea>
+                     </div>
+                     <div class="text-center mt-3">
+                        <button class="btn btn-outline-dark btn-cipher" onclick="encryptPlayfair()">Mã hóa</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-4">
+               <div class="card mb-3 equal-height">
+                  <div class="card-header">
+                    <h5 style="text-align: center; margin-bottom: 10px; font-size: 20px;">Mã One-Time Pad</h5>
+                  </div>
+                  <div class="card-body">
+                     <div class="txt-info">
+                        <p>One-Time Pad là một loại mã hóa lý tưởng, trong đó mỗi ký tự trong văn bản gốc được mã hóa bằng cách sử dụng một khóa ngẫu nhiên chỉ được sử dụng một lần.</p>
+                        <p><strong>Mã hóa:</strong> <a href="https://viblo.asia/p/tim-hieu-ve-he-ma-one-time-pad-yMnKM62NZ7P" target="_blank">Xem hướng dẫn mã hóa tại đây</a></p>
+                        <p><strong>Khóa:</strong> Phải là một chuỗi ký tự chữ cái không dấu, không bao gồm số và ký tự đặc biệt.</p>
+                        <div class ="alert alert-danger" role="alert" id="onetimePadError" style="display: none;"></div>
+                        <img src="https://duongnt.com/wp-content/uploads/2021/06/otp_overview_example.png" alt="One-Time Pad" style="width: 100%; max-width: 300px; margin: 0 auto; display: block; margin-top: 10px; margin-bottom: 10px;">
+                     </div>
+
+                     <div class="cipher">
+                        <label for="onetimePadPlaintext" class="form-label"><strong>Văn bản nguồn:</strong></label>
+                        <textarea class="form-control" id="onetimePadPlaintext" rows="3" placeholder="Nhập văn bản nguồn">HELLO WORLD</textarea>
+                        <label for="onetimePadKey" class="form-label"><strong>Khóa:</strong> ( ≥ độ dài văn bản nguồn)</label>
+                        <input type="text" class="form-control" id="onetimePadKey" placeholder="Nhập khóa" value="ZPJMXWQBSVD">
+                        <label for="onetimePadCiphertext" class="form-label"><strong>Văn bản mã hóa:</strong></label>
+                        <textarea class="form-control" id="onetimePadCiphertext" rows="3" readonly></textarea>
+                     </div>
+                     <div class="text-center mt-3">
+                        <button class="btn btn-outline-dark btn-cipher" onclick="encryptOnetimePad()">Mã hóa</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-4">
+               <div class="card mb-3 equal-height">
+                  <div class="card-header">
+                    <h5 style="text-align: center; margin-bottom: 10px; font-size: 20px;">Mã hàng rào sắt (Rail Fence Cipher)</h5>
+                  </div>
+                  <div class="card-body">
+                     <div class ="txt-info">
+                        <p>Mã hàng rào sắt là một loại mã hóa đơn giản, trong đó các ký tự trong văn bản gốc được xếp theo hình zig-zag trên nhiều hàng, sau đó được đọc từ trên xuống để tạo ra văn bản mã hóa.</p>
+                        <p><strong>Mã hóa:</strong> <a href="https://www.baeldung.com/cs/cryptography-rail-fence-cipher" target="_blank">Xem hướng dẫn mã hóa tại đây</a></p>
+                        <p><strong>Số Rail:</strong> Là một số nguyên dương.</p>
+                        <img src="https://www.researchgate.net/profile/Sara-Farrag/publication/333480277/figure/fig5/AS:764200859234304@1559211091110/Encrypting-using-Rail-Fence-Cipher5.ppm" alt="Rail Fence Cipher" style="width: 100%; max-width: 350px; margin: 0 auto; display: block; margin-top: 10px; margin-bottom: 10px;">
+                        <div class ="alert alert-danger" role="alert" id="railfenceError" style="display: none;"></div>
+                     </div>
+                     <div class="cipher">
+                        <label for="railfencePlaintext" class="form-label"><strong>Văn bản nguồn:</strong></label>
+                        <textarea class="form-control" id="railfencePlaintext" rows="3" placeholder="Nhập văn bản nguồn">HELLO WORLD</textarea>
+                        <label for="railfenceKey" class="form-label
+                        "><strong>Số Rail:</strong> ( ≥ 2 )</label>
+                        <input class="form-control" type="number" id="railfenceKey" min="0" max="100" required value="3">  
+                        <label for ="railfenceCiphertext" class="form-label"><strong>Văn bản mã hóa:</strong></label>
+                        <textarea class="form-control" id="railfenceCiphertext" rows="3" readonly></textarea>
+                     </div>
+                     <div class="text-center mt-3">
+                        <button class="btn btn-outline-dark btn-cipher" onclick="encryptRailfence()">Mã hóa</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      </div>
+      <script src="classical-cryptographic.js"></script>
+   </body>
+</html>
